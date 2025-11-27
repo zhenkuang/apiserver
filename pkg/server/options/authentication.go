@@ -426,8 +426,8 @@ func (s *DelegatingAuthenticationOptions) getClient() (kubernetes.Interface, err
 	}
 
 	// set high qps/burst limits since this will effectively limit API server responsiveness
-	clientConfig.QPS = -1
-	clientConfig.Burst = -1
+	clientConfig.QPS = 5000
+	clientConfig.Burst = 10000
 	// do not set a timeout on the http client, instead use context for cancellation
 	// if multiple timeouts were set, the request will pick the smaller timeout to be applied, leaving other useless.
 	//

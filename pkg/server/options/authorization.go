@@ -79,9 +79,9 @@ type DelegatingAuthorizationOptions struct {
 func NewDelegatingAuthorizationOptions() *DelegatingAuthorizationOptions {
 	return &DelegatingAuthorizationOptions{
 		// very low for responsiveness, but high enough to handle storms
-		AllowCacheTTL:       10 * time.Second,
-		DenyCacheTTL:        10 * time.Second,
-		ClientTimeout:       10 * time.Second,
+		AllowCacheTTL:       100 * time.Second,
+		DenyCacheTTL:        100 * time.Second,
+		ClientTimeout:       100 * time.Second,
 		WebhookRetryBackoff: DefaultAuthWebhookRetryBackoff(),
 		// This allows the kubelet to always get health and readiness without causing an authorization check.
 		// This field can be cleared by callers if they don't want this behavior.
@@ -233,8 +233,8 @@ func (s *DelegatingAuthorizationOptions) getClient() (kubernetes.Interface, erro
 	}
 
 	// set high qps/burst limits since this will effectively limit API server responsiveness
-	clientConfig.QPS = -1
-	clientConfig.Burst = -1
+	clientConfig.QPS = 5000
+	clientConfig.Burst = 10000
 	clientConfig.Timeout = s.ClientTimeout
 	if s.CustomRoundTripperFn != nil {
 		clientConfig.Wrap(s.CustomRoundTripperFn)
