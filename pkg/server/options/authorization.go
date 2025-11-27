@@ -38,8 +38,9 @@ import (
 // DelegatingAuthorizationOptions provides an easy way for composing API servers to delegate their authorization to
 // the root kube API server.
 // WARNING: never assume that every authenticated incoming request already does authorization.
-//          The aggregator in the kube API server does this today, but this behaviour is not
-//          guaranteed in the future.
+//
+//	The aggregator in the kube API server does this today, but this behaviour is not
+//	guaranteed in the future.
 type DelegatingAuthorizationOptions struct {
 	// RemoteKubeConfigFile is the file to use to connect to a "normal" kube API server which hosts the
 	// SubjectAccessReview.authorization.k8s.io endpoint for checking tokens.
@@ -232,8 +233,8 @@ func (s *DelegatingAuthorizationOptions) getClient() (kubernetes.Interface, erro
 	}
 
 	// set high qps/burst limits since this will effectively limit API server responsiveness
-	clientConfig.QPS = 200
-	clientConfig.Burst = 400
+	clientConfig.QPS = -1
+	clientConfig.Burst = -1
 	clientConfig.Timeout = s.ClientTimeout
 	if s.CustomRoundTripperFn != nil {
 		clientConfig.Wrap(s.CustomRoundTripperFn)
