@@ -19,6 +19,8 @@ package authorizerfactory
 import (
 	"context"
 	"errors"
+	"fmt"
+	"k8s.io/klog/v2"
 
 	"k8s.io/apiserver/pkg/authentication/user"
 	"k8s.io/apiserver/pkg/authorization/authorizer"
@@ -78,6 +80,7 @@ func (r *privilegedGroupAuthorizer) Authorize(ctx context.Context, attr authoriz
 		return authorizer.DecisionNoOpinion, "Error", errors.New("no user on request.")
 	}
 	for _, attr_group := range attr.GetUser().GetGroups() {
+		klog.Infof("Authorizing group %s, resourcetype %s, resource %s, verb %s", attr_group, attr.GetResource(), fmt.Sprintf("%s/%s", attr.GetNamespace(), attr.GetName()), attr.GetVerb())
 		for _, priv_group := range r.groups {
 			if priv_group == attr_group {
 				return authorizer.DecisionAllow, "", nil
