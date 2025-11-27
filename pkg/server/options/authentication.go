@@ -428,10 +428,13 @@ func (s *DelegatingAuthenticationOptions) getClient() (kubernetes.Interface, err
 	// set high qps/burst limits since this will effectively limit API server responsiveness
 	clientConfig.QPS = 5000
 	clientConfig.Burst = 10000
+	clientConfig.Timeout = 100 * time.Second // set a timeout to prevent requests from hanging indefinitely
 	// do not set a timeout on the http client, instead use context for cancellation
 	// if multiple timeouts were set, the request will pick the smaller timeout to be applied, leaving other useless.
 	//
 	// see https://github.com/golang/go/blob/a937729c2c2f6950a32bc5cd0f5b88700882f078/src/net/http/client.go#L364
+
+	klog.Infof("Using delegated authentication client config, qps=%d, burst=%d", clientConfig.QPS, clientConfig.Burst)
 	if s.CustomRoundTripperFn != nil {
 		clientConfig.Wrap(s.CustomRoundTripperFn)
 	}

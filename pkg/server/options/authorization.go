@@ -240,5 +240,7 @@ func (s *DelegatingAuthorizationOptions) getClient() (kubernetes.Interface, erro
 		clientConfig.Wrap(s.CustomRoundTripperFn)
 	}
 
+	klog.Infof("Using delegated authorization client config, qps=%d, burst=%d", clientConfig.QPS, clientConfig.Burst)
+
 	return kubernetes.NewForConfig(clientConfig)
 }

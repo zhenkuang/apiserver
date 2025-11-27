@@ -326,6 +326,8 @@ func NewConfig(codecs serializer.CodecFactory) *Config {
 	}
 	lifecycleSignals := newLifecycleSignals()
 
+	klog.Infof("Initializing API server lifecycle, MaxRequestsInFlight: %d, MaxMutatingRequestsInFlight: %d", 10000, 10000)
+	
 	return &Config{
 		Serializer:                  codecs,
 		BuildHandlerChainFunc:       DefaultBuildHandlerChain,
