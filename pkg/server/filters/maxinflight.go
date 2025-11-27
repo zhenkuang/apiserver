@@ -125,6 +125,9 @@ func WithMaxInFlightLimit(
 	mutatingLimit int,
 	longRunningRequestCheck apirequest.LongRunningRequestCheck,
 ) http.Handler {
+
+	klog.Infof("maxinflight limit set to: %d, mutatingLimit: %d", nonMutatingLimit, mutatingLimit)
+
 	if nonMutatingLimit == 0 && mutatingLimit == 0 {
 		return handler
 	}
